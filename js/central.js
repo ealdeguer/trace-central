@@ -1,0 +1,968 @@
+$(document).ready(function() {
+      $.playSound('sound/central.wav');
+      // Launch the webservice which check DB availability
+      $.ajax({
+	url: "php-services/pg_connection.php",
+	cache: false }).done(function(result){
+	  if (result=="Connected") {
+	    $("#dbstatus").text(result);
+	    $("#dbstatusimg").attr("src","img/green.png");
+	    $("#dbstatuserror").hide("slow");
+	    $("db").css("color","green")
+	  }
+	  else {
+	    $("#dbstatus").text(result);  
+	    $("db").css("fontcolor","red")
+	    $("#dbstatusimg").attr("src","img/red.png");
+	    $("#dbstatuserror").show("slow");
+	  }
+	});	
+      //Purge the temp script files
+      $.ajax({
+	  url: "php-services/purge.php"});
+//       		      
+      //form adaptation depending selected type
+      $("#type").change( function() {
+      var str="";      
+      $("select option:selected").each(function() {
+	str += $(this).text();
+      });
+      
+      //Remove type error
+      $.playSound('sound/green.wav');
+      $("#typeerror").hide("slow");
+      $("#typeerrorimg").attr("src","img/green.png");
+      
+      switch (str) {
+	
+      case "Please select a type":
+      //show error
+      $("#typeerror").show();
+      $("#typeerrorimg").attr("src","img/red.png");
+      break
+   
+      case "Agenda":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#pictures").show("slow");
+	$("#videos").show("slow");
+	$("#eventdate").show("slow");
+	$("#cityvenue").show("slow");
+	$("#ticker").show("slow");
+	$("#voiceover").show("slow");
+	$("#pronunciation").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#mpictures").show();
+	$("#mvideos").show();
+	$("#meventdate").show();
+	$("#mcityvenue").show();
+	$("#mticker").show();
+	$("#mvoiceover").show();
+	$("#mpronunciation").show();
+	$("#msubmit").show();
+	
+	//hide sections
+	$("#script").hide("slow");
+	//hide menus
+	$("#mscript").hide();
+	
+	//remove optional sections
+	  //upload video
+	  $("#videoerror").hide("slow");
+	  $("#videoerrorimg").attr("src","img/green.png");
+
+	  //Ticker
+	  $("#tickererror").hide("slow");
+	  $("#tickererrorimg").attr("src","img/green.png");
+	  
+	  //pronunciation
+	  $("#perror").hide("slow");
+	  $("#perrorimg").attr("src","img/green.png");
+	
+      break
+      
+      case "Bande Annonce":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#ticker").show("slow");
+	$("#voiceover").show("slow");
+	$("#pronunciation").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#mticker").show();
+	$("#mvoiceover").show();
+	$("#mpronunciation").show();
+	$("#msubmit").show();
+	
+	//hide sections
+	$("#pictures").hide("slow");
+	$("#videos").hide("slow");
+	$("#script").hide("slow");
+	$("#eventdate").hide("slow");
+	$("#cityvenue").hide("slow");
+	//hide menus
+	$("#mpictures").hide();
+	$("#mvideos").hide();
+	$("#mscript").hide();
+	$("#meventdate").hide();
+	$("#mcityvenue").hide();
+
+      break
+      
+      case "Billboard":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#pictures").show("slow");
+	$("#videos").show("slow");
+	$("#voiceover").show("slow");
+	$("#pronunciation").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#mpictures").show();
+	$("#mvideos").show();
+	$("#mvoiceover").show();
+	$("#mpronunciation").show();
+	$("#msubmit").show();
+	
+	//hide sections
+	$("#script").hide("slow");
+	$("#eventdate").hide("slow");
+	$("#cityvenue").hide("slow");
+	$("#ticker").hide("slow");
+	//hide menus
+	$("#mscript").hide();
+	$("#meventdate").hide();
+	$("#mcityvenue").hide();
+	$("#mticker").hide();
+	
+      break
+      
+      case "Guest Star":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#pictures").show("slow");
+	$("#videos").show("slow");
+	$("#script").show("slow");
+	$("#voiceover").show("slow");
+	$("#pronunciation").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#mpictures").show();
+	$("#mvideos").show();
+	$("#mscript").show();
+	$("#mvoiceover").show();
+	$("#mpronunciation").show();
+	$("#msubmit").show();
+	
+	//hide sections
+	$("#eventdate").hide("slow");
+	$("#cityvenue").hide("slow");
+	$("#ticker").hide("slow");
+	//hide menus
+	//hide sections
+	$("#meventdate").hide();
+	$("#mcityvenue").hide();
+	$("#mticker").hide();
+      break
+      
+      case "ID":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#msubmit").show();
+	
+	//hide sections
+	$("#pictures").hide("slow");
+	$("#videos").hide("slow");
+	$("#script").hide("slow");
+	$("#eventdate").hide("slow");
+	$("#cityvenue").hide("slow");
+	$("#ticker").hide("slow");
+	$("#voiceover").hide("slow");
+	$("#pronunciation").hide("slow");
+
+	//hide menus
+	$("#mpictures").hide();
+	$("#mvideos").hide();
+	$("#mscript").hide();
+	$("#meventdate").hide();
+	$("#mcityvenue").hide();
+	$("#mticker").hide();
+	$("#mvoiceover").hide();
+	$("#mpronunciation").hide();
+      break
+      
+      case "Jeu Concours":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#pictures").show("slow");
+	$("#videos").show("slow");
+	$("#cityvenue").show("slow");
+	$("#ticker").show("slow");
+	$("#voiceover").show("slow");
+	$("#pronunciation").show("slow");
+	$("#submit").show("slow");
+	//show menus
+        $("#mgeneral").show();
+	$("#mpictures").show();
+	$("#mvideos").show();
+	$("#mcityvenue").show();
+	$("#mticker").show();
+	$("#mvoiceover").show();
+	$("#mpronunciation").show();
+	$("#msubmit").show();
+	
+	//hide sections
+	$("#script").hide("slow");
+	$("#eventdate").hide("slow");
+	//hide menus
+	$("#script").hide();
+	$("#eventdate").hide();
+
+      break
+
+	case "Programme Trace Sports":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#pictures").show("slow");
+	$("#videos").show("slow");
+	$("#script").show("slow");
+	$("#voiceover").show("slow");
+	$("#pronunciation").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#mpictures").show();
+	$("#mvideos").show();
+	$("#mscript").show();
+	$("#mvoiceover").show();
+	$("#mpronunciation").show();
+	$("#msubmit").show();
+	
+	//hide sections
+	$("#eventdate").hide("slow");
+	$("#cityvenue").hide("slow");
+	$("#ticker").hide("slow");
+	//hide menus
+	$("#meventdate").hide();
+	$("#mcityvenue").hide();
+	$("#mticker").hide();
+	
+      break
+      
+      case "Spot SMS":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#pictures").show("slow");
+	$("#videos").show("slow");
+	$("#voiceover").show("slow");
+	$("#pronunciation").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#mpictures").show();
+	$("#mvideos").show();
+	$("#mvoiceover").show();
+	$("#mpronunciation").show();
+	$("#msubmit").show();
+
+	//hide sections
+	$("#script").hide("slow");
+	$("#eventdate").hide("slow");
+	$("#cityvenue").hide("slow");
+	$("#ticker").hide("slow");
+	//hide menus
+	$("#mscript").hide();
+	$("#meventdate").hide();
+	$("#mcityvenue").hide();
+	$("#mticker").hide();
+      break
+      
+      case "Top Urban":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#pictures").show("slow");
+	$("#videos").show("slow");
+	$("#script").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#mpictures").show();
+	$("#mvideos").show();
+	$("#mscript").show();
+	$("#msubmit").show();
+	
+	//hide sections
+	$("#eventdate").hide("slow");
+	$("#cityvenue").hide("slow");
+	$("#ticker").hide("slow");
+	$("#voiceover").hide("slow");
+	$("#pronunciation").hide("slow");
+	//hide menus
+	$("#meventdate").hide();
+	$("#mcityvenue").hide();
+	$("#mticker").hide();
+	$("#mvoiceover").hide();
+	$("#mpronunciation").hide();
+	
+      break
+      
+      case "Trace Event":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#pictures").show("slow");
+	$("#videos").show("slow");
+	$("#script").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#mpictures").show();
+	$("#mvideos").show();
+	$("#mscript").show();
+	$("#msubmit").show();	
+	
+	//hide sections
+	$("#eventdate").hide("slow");
+	$("#cityvenue").hide("slow");
+	$("#ticker").hide("slow");
+	$("#voiceover").hide("slow");
+	$("#pronunciation").hide("slow");
+	//hide menus
+	$("#meventdate").hide();
+	$("#mcityvenue").hide();
+	$("#mticker").hide();
+	$("#mvoiceover").hide();
+	$("#mpronunciation").hide();
+      break
+      
+      case "Zoom":
+      
+        //show sections
+	$("#general").show("slow");
+	$("#pictures").show("slow");
+	$("#videos").show("slow");
+	$("#voiceover").show("slow");
+	$("#pronunciation").show("slow");
+	$("#submit").show("slow");
+	//show menus
+	$("#mgeneral").show();
+	$("#mpictures").show();
+	$("#mvideos").show();
+	$("#mvoiceover").show();
+	$("#mpronunciation").show();
+	$("#msubmit").show();
+	
+	//hide sections
+	$("#script").hide("slow");
+	$("#eventdate").hide("slow");
+	$("#cityvenue").hide("slow");
+	$("#ticker").hide("slow");
+	//hide menus
+	$("#mscript").hide();
+	$("#meventdate").hide();
+	$("#mcityvenue").hide();
+	$("#mticker").hide();
+	
+      break
+      
+      }
+      
+      //creation of the internal ID
+      if ($("#type").val()!="Please select a type" & $("#briefname").val()!="CAPS ONLY, NO ACCENTS")
+      {
+	var internalid = $("#type").val()+'_'+$("#briefname").val();
+	$("#internalid").val(internalid);
+      }
+      else{}
+      
+      });
+      
+      //Section Brief Name
+      $("#briefname").bind('keypress', function (event) {
+      var regex = new RegExp("^[a-zA-Z0-9]+$");
+      var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	if (!regex.test(key)) {
+	event.preventDefault();
+	$.playSound('sound/red.wav');
+	return false;
+	}
+      });
+      
+      $("#briefname").change( function() {
+      this.value = this.value.toUpperCase();
+      //Remove briefname error
+      $.playSound('sound/line_ok.wav');
+      $("#bnerror").hide("slow");
+      $("#bnerrorimg").attr("src","img/green.png");
+      $("#briefname").attr("readonly",true);
+      $("#bnmod").attr("style","none");
+      
+      //Creation of the internal ID
+      if ($("#type").val()!="Please select a type" & $("#briefname").val()!="CAPS ONLY, NO ACCENTS")
+      {
+	var internalid = $("#type").val()+'_'+$("#briefname").val();
+	$("#internalid").val(internalid);
+      }
+      else{}
+      
+      });
+      
+      //mod button for briefname
+      $("#bnmod").click( function() {
+      $.playSound('sound/modify.wav');
+      $("#bnerror").show();
+      $("#bnerrorimg").attr("src","img/red.png");
+      $("#briefname").attr("readonly",false);
+      $("#bnmod").attr("style","display:none");
+      //section submit
+      $("#submiterror").show();
+	  $("#submiterror").html("<strong>Error</strong> :<br>Briefname has been modified and should be validated.");
+	  $("#submiterrorimg").attr("src","img/red.png");
+      });
+      
+      //Show the time selector on length
+         
+      $("#lengthpicker").datetimepicker({pickDate: false}).on('changeDate', function(ev){
+	
+      $("#lengtherror").hide("slow");
+      $("#lengtherrorimg").attr("src","img/green.png");
+      $("#lengthmod").attr("style","none");
+//      $("#lengthpicker").datetimepicker('disable');
+           
+      });
+      
+      
+      //modify the length field
+      $("#lengthmod").click( function() {
+	$.playSound('sound/modify.wav');
+	$("#lengtherror").show();
+	$("#lengtherrorimg").attr("src","img/red.png");
+	$("#lengthmod").attr("style","display:none");
+	$("#lengthpicker").datetimepicker('enable');
+	//section submit
+	$("#submiterror").show();
+	$("#submiterror").html("<strong>Error</strong> :<br>Brief Length has been modified and should be validated.");
+	$("#submiterrorimg").attr("src","img/red.png");
+	});
+      
+      //Length sound
+      $("#hup").click(function(){
+         $.playSound('sound/up.wav');
+      });
+      $("#mup").click(function(){
+         $.playSound('sound/up.wav');
+      });
+      $("#sup").click(function(){
+         $.playSound('sound/up.wav');
+      });
+      $("#hdo").click(function(){
+         $.playSound('sound/down.wav');
+      });
+      $("#mdo").click(function(){
+         $.playSound('sound/down.wav');
+      });
+      $("#sdo").click(function(){
+         $.playSound('sound/down.wav');
+      });
+	
+      //Find today date
+      var today = new Date ();
+      var month = today.getMonth()+1;
+      var day = today.getDate();        
+      today = today.getFullYear() + '-' + (month<10 ? '0' : '') + month + '-' + (day<10 ? '0' : '') + day;
+      $("#today").val(today);
+      
+      // Launch the webservice which check get from the DB the business days
+      $.getJSON("php-services/pg_bdays.php", function(json){
+      $.each(json.bdays, function() {
+	if (this['date'] == today)
+	{
+	var bdid = this['bdid'];
+	var bdid = Number(bdid)+7;
+	    $.each(json.bdays, function() {
+	      if (this['bdid'] == bdid)
+	      {
+	      var beginmin = this['date'];
+	            //Show the date selector on begindate
+		    $("#beginpicker").val(beginmin);
+		    $("#beginpicker").datepicker({dateFormat: 'yy-mm-dd', firstDay: 1, minDate: beginmin}).change(function(){
+		      $.playSound('sound/date_picked.wav');
+		      $("#beginerror").hide("slow");
+		      $("#beginerrorimg").attr("src","img/green.png");
+		      $("#bpmod").attr("style","none");
+		      $("#beginpicker").datepicker('disable');
+		      //Show the date selector on endate
+		      var beginselected = $("#beginpicker").val();
+		      $("#endpicker").val(beginselected);
+		      $("#endpicker").datepicker({dateFormat: 'yy-mm-dd', firstDay: 1, minDate: beginselected});
+        
+		      //Show the date selector on eventbegin
+		      $("#beginevent").val(beginselected);
+		      $("#beginevent").datepicker({dateFormat: 'yy-mm-dd', firstDay: 1, minDate: beginselected});
+	      
+		      //Check the begin event date
+		      $("#beginevent").change( function(){
+			$.playSound('sound/date_picked.wav');
+		      $("#begineventerror").hide("slow");
+		      $("#begineventerrorimg").attr("src","img/green.png");
+		      $("#beginevent").attr("readonly",true);
+		      $("#begineventmod").attr("style","none"); 
+		      
+		      var beventsel = $("#beginevent").val();
+		      //Show the date selector on eventbegin
+		      $("#endevent").val(beventsel);
+		      $("#endevent").datepicker({dateFormat: 'yy-mm-dd', firstDay: 1, minDate: beventsel});
+		      
+		      //Check the end event date
+		      $("#endevent").change( function(){
+		      $("#endeventerror").hide("slow");
+		      $("#endeventerrorimg").attr("src","img/green.png"); 
+		      $("#endevent").attr("readonly",true);
+		      $("#endeventmod").attr("style","none"); 
+		      });
+		      
+		      });
+		      		       
+		    }); 
+	      }
+	      else {}
+	    });
+	}
+	else {}
+	});
+
+      }); 
+            
+      //mod button for beginpicker
+      $("#bpmod").click( function() {
+	    $.playSound('sound/modify.wav');
+	    $("#beginerror").show();
+	    $("#beginerrorimg").attr("src","img/red.png");
+	    $("#bpmod").attr("style","display:none");
+	    $("#beginpicker").datepicker('enable')
+	    
+	    //section submit
+	    $("#submiterror").show();
+		$("#submiterror").html("<strong>Error</strong> :<br>Campaign Begin Date has been modified and should be validated.");
+		$("#submiterrorimg").attr("src","img/red.png");
+      });
+      
+      //Check the end date
+      $("#endpicker").change( function(){
+	$.playSound('sound/date_picked.wav');
+      $("#enderror").hide("slow");
+      $("#enderrorimg").attr("src","img/green.png"); 
+      $("#endpicker").datepicker('disable');
+      $("#epmod").attr("style","none");
+      });
+     
+      //mod button for endpicker
+      $("#epmod").click( function() {
+	    $.playSound('sound/modify.wav');
+	    $("#enderror").show();
+	    $("#enderrorimg").attr("src","img/red.png");
+	    $("#epmod").attr("style","display:none");
+	    $("#endpicker").datepicker('enable');
+
+	    //section submit
+	    $("#submiterror").show();
+		$("#submiterror").html("<strong>Error</strong> :<br>Campaign End Date has been modified and should be validated.");
+		$("#submiterrorimg").attr("src","img/red.png");
+      });
+       
+	    //mod button for eventdatebegin
+	    $("#begineventmod").click( function() {
+	    $.playSound('sound/modify.wav');
+	    $("#begineventerror").show();
+	    $("#begineventerrorimg").attr("src","img/red.png");
+	    $("#beginevent").attr("readonly",false);
+	    $("#begineventmod").attr("style","display:none");
+	    //section submit
+	    $("#submiterror").show();
+		$("#submiterror").html("<strong>Error</strong> :<br>Event Date has been modified and should be validated.");
+		$("#submiterrorimg").attr("src","img/red.png");
+	    });
+	    
+	    //mod button for eventdatebegin
+	    $("#endeventmod").click( function() {
+	    $.playSound('sound/modify.wav');
+	    $("#endeventerror").show();
+	    $("#endeventerrorimg").attr("src","img/red.png");
+	    $("#endevent").attr("readonly",false);
+	    $("#endeventmod").attr("style","display:none");
+	    //section submit
+	    $("#submiterror").show();
+		$("#submiterror").html("<strong>Error</strong> :<br>Event Date has been modified and should be validated.");
+		$("#submiterrorimg").attr("src","img/red.png");
+	    });
+			    
+      //Feed selected
+      
+      $("#feedcheck").change( function() {
+    
+      //Remove Feed error in the manual case
+      $.playSound('sound/line_ok.wav');
+      $("#feederror").hide("slow");
+      $("#feederrorimg").attr("src","img/green.png");
+      $("#fcmod").attr("style","none");
+      });
+  
+      //modify the feed field
+      $("#fcmod").click( function() {
+	$.playSound('sound/modify.wav');
+	$("#feederror").show();
+	$("#feederrorimg").attr("src","img/red.png");
+	$("#feedcheck").attr("readonly",false);
+	$("#fcmod").attr("style","display:none");
+	//section submit
+	$("#submiterror").show();
+	$("#submiterror").html("<strong>Error</strong> :<br>Feed Check has been modified and should be validated.");
+	$("#submiterrorimg").attr("src","img/red.png");
+	});
+      
+      //Confirm upload pictures
+      $("#picturecu").click( function() {
+	
+	var briefname = $("#bnerrorimg").attr("src");
+	var type = $("#typeerrorimg").attr("src");
+	
+	if ((briefname == "img/green.png") & (type == "img/green.png"))
+	{
+	
+	$.ajax({
+	  url: "php-services/picture-mover.php"}).done(function(result){
+	  if (result=="Done") {
+	    $.playSound('sound/line_ok.wav');
+	    $("#pictureerrorimg").attr("src","img/green.png");
+	    $("#pictureerror").hide("slow");
+	  }
+	  else {
+	    $.playSound('sound/line_error.wav');
+	    $("#pictureerrorimg").attr("src","img/red.png");
+	    $("#pictureerror").html("<strong>Error</strong> :<br>Fatal Error during  upload.");
+	    $("#pictureerror").show("slow");
+	  }
+	});
+	}
+	
+	else{
+	  $.playSound('sound/red.wav');
+	  $("#pictureerror").show();
+	  $("#pictureerror").html("<strong>Error</strong> :<br>You need to define the Type and the Brief Name first.");
+	  $("#pictureerrorimg").attr("src","img/red.png");
+	}
+      });
+      
+      //Confirm upload video
+      $("#videocu").click( function() {
+	
+	var briefname = $("#bnerrorimg").attr("src");
+	var type = $("#typeerrorimg").attr("src");
+	
+	if ((briefname == "img/green.png") & (type == "img/green.png"))
+	{
+	
+	$.ajax({
+	  url: "php-services/video-mover.php"}).done(function(result){
+	  if (result=="Done") {
+	    $.playSound('sound/line_ok.wav');
+	    $("#videoerrorimg").attr("src","img/green.png");
+	    $("#videoerror").hide("slow");
+	  }
+	  else {
+	    $.playSound('sound/line_error.wav');
+	    $("#videoerrorimg").attr("src","img/red.png");
+	    $("#videoerror").html("<strong>Error</strong> :<br>Fatal Error during  upload.");
+	    $("#videoerror").show("slow");
+	  }
+	});
+	}
+	
+	else{
+	  $.playSound('sound/red.wav');
+	  $("#videoerror").show();
+	  $("#videoerror").html("<strong>Error</strong> :<br>You need to define the Type and the Brief Name first.");
+	  $("#videoerrorimg").attr("src","img/red.png");
+	}
+      });
+      
+      //Confirm upload Script
+      $("#scriptcu").click( function() {
+	
+	var briefname = $("#bnerrorimg").attr("src");
+	var type = $("#typeerrorimg").attr("src");
+	
+	if ((briefname == "img/green.png") & (type == "img/green.png"))
+	{
+	
+	$.ajax({
+	  url: "php-services/script-mover.php"}).done(function(result){
+	  if (result=="Done") {
+	    $.playSound('sound/line_ok.wav');
+	    $("#scripterrorimg").attr("src","img/green.png");
+	    $("#scripterror").hide("slow");
+	  }
+	  else {
+	    $.playSound('sound/line_error.wav');
+	    $("#scripterrorimg").attr("src","img/red.png");
+	    $("#scripterror").html("<strong>Error</strong> :<br>Fatal Error during  upload.");
+	    $("#scripterror").show("slow");
+	  }
+	});
+	}
+	
+	else{
+	  $.playSound('sound/red.wav');
+	  $("#scripterror").show();
+	  $("#scripterror").html("<strong>Error</strong> :<br>You need to define the Type and the Brief Name first.");
+	  $("#scripterrorimg").attr("src","img/red.png");
+	}
+      });
+            
+      //Section City
+      $("#city").bind('keypress', function (event) {
+      var regex = new RegExp("^[a-zA-Z0-9]+$");
+      var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	if (!regex.test(key)) {
+	event.preventDefault();
+	$.playSound('sound/red.wav');
+	return false;
+	}
+      });
+      
+      $("#city").change( function() {
+      this.value = this.value.toUpperCase();
+      //Remove city error in the manual case
+      $.playSound('sound/line_ok.wav');
+      $("#cityerror").hide("slow");
+      $("#cityerrorimg").attr("src","img/green.png");
+      
+      });
+            
+      //Section Venue
+      $("#venue").bind('keypress', function (event) {
+      var regex = new RegExp("^[a-zA-Z0-9]+$");
+      var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	if (!regex.test(key)) {
+	event.preventDefault();
+	$.playSound('sound/red.wav');
+	return false;
+	}
+      });
+      $("#venue").change( function() {
+      this.value = this.value.toUpperCase();
+      //Remove venue error in the manual case
+      $.playSound('sound/line_ok.wav');
+      $("#venueerror").hide("slow");
+      $("#venueerrorimg").attr("src","img/green.png");
+      
+      });
+      
+      //Section Ticker
+      $("#tickertxt").maxlength({max: 160});
+      $("#tickertxt").bind('keypress', function (event) {
+      var regex = new RegExp("^[a-zA-Z0-9]+$");
+      var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	if (!regex.test(key)) {
+	event.preventDefault();
+	$.playSound('sound/red.wav');
+	return false;
+	}
+      });
+      $("#tickertxt").change( function() {
+      this.value = this.value.toUpperCase();
+      //Remove ticker error in the manual case
+      $.playSound('sound/line_ok.wav');
+      $("#tickererror").hide("slow");
+      $("#tickererrorimg").attr("src","img/green.png");
+      
+      });
+      
+      //Section Voiceover
+      $("#voiceovertxt").jqte({link: false, unlink: false, sup: false, sub: false, rule: false});
+      $("#vobutton").click( function() {
+      var vostate = $("#voiceovertxt").val();
+      if (vostate != "Enter here the text related to the voice-over.")
+      {
+      this.value = this.value.toUpperCase();
+      //Remove voiceover error in the manual case
+      $.playSound('sound/line_ok.wav');
+      $("#voerror").hide("slow");
+      $("#voerrorimg").attr("src","img/green.png");
+      }
+      else{
+      $.playSound('sound/line_error.wav');
+      $("#voerror").html("<strong>Error</strong> :<br>You need to enter the voice-over text.");
+      $("#voerror").show();
+      $("#voerrorimg").attr("src","img/red.png");	
+      }      
+      });
+      
+      //Section Pronunciation
+      $("#pronunciationtxt").jqte({link: false, unlink: false, sup: false, sub: false, rule: false});
+      $("#pbutton").click( function() {
+      this.value = this.value.toUpperCase();
+      //Remove pronunciation error in the manual case
+      $.playSound('sound/line_ok.wav');
+      $("#perror").hide("slow");
+      $("#perrorimg").attr("src","img/green.png");
+      
+      });
+      
+      //Reset action
+      $("#reset").click( function() {
+	location.reload();
+      });
+      
+      //Submit action
+      $("#submitbtn").click( function() {
+	
+      var typesel = $("#type").val();
+      
+      var briefname = $("#bnerrorimg").attr("src");
+      var length = $("#lengtherrorimg").attr("src");
+      var beginpicker = $("#beginerrorimg").attr("src");
+      var endpicker = $("#enderrorimg").attr("src");
+      var feederror = $("#feederrorimg").attr("src");
+      var pictureerror = $("#pictureerrorimg").attr("src");
+      var videoserror = $("#videoerrorimg").attr("src");
+      var begindeerror = $("#begineventerrorimg").attr("src");
+      var enddeerror = $("#endeventerrorimg").attr("src");
+      var cityerror = $("#cityerrorimg").attr("src");
+      var venueerror = $("#venueerrorimg").attr("src");
+      var tickererror = $("#tickererrorimg").attr("src");
+      var voerror = $("#voerrorimg").attr("src");
+      var perror = $("#perrorimg").attr("src");
+      
+      $("#console").html("briefname: "+briefname+"<br>length: "+length+"<br>beginpicker: "+beginpicker+"<br>endpicker: "+endpicker+"<br>feederror: "+feederror+"<br>pictureerror: "+pictureerror+"<br>videoserror: "+videoserror+"<br>begindeerror: "+begindeerror+"<br>enddeerror: "+enddeerror+"<br>cityerror: "+cityerror+"<br>venueerror: "+venueerror+"<br>tickererror: "+tickererror+"<br>voerror: "+voerror+"<br>perror: "+perror);
+
+      switch (typesel) {
+	
+      case "Please select a type":
+	//show error
+	$("#submiterror").show();
+	$("#submiterrorimg").attr("src","img/red.png");
+	
+      break
+      
+      case "Agenda":
+       
+      if ((briefname == "img/green.png") & (length == "img/green.png") & (beginpicker == "img/green.png") & (endpicker == "img/green.png") & (feederror == "img/green.png") & (pictureerror == "img/green.png") & (cityerror == "img/green.png") & (venueerror == "img/green.png") & (begindeerror == "img/green.png") & (enddeerror == "img/green.png") & (voerror == "img/green.png"))
+      {	
+	$.playSound('sound/brief_complete.wav');
+	$("#submiterror").hide("slow");
+	$("#submiterrorimg").attr("src","img/green.png");
+      }
+      else{
+	$.playSound('sound/brief_incomplete.wav');
+	$("#submiterror").show();
+	$("#submiterror").html("<strong>Error</strong> :<br>One or several fields are incorrect.");
+	$("#submiterrorimg").attr("src","img/red.png");
+      }
+	
+      break
+      
+      case "Billboard":
+                
+      if ((briefname == "img/green.png") & (length == "img/green.png") & (beginpicker == "img/green.png") & (endpicker == "img/green.png") & (feederror == "img/green.png") & (pictureerror == "img/green.png") & (videoserror == "img/green.png") & (voerror == "img/green.png") & (perror == "img/green.png"))
+      {	
+	$.playSound('sound/brief_complete.wav');
+	$("#submiterror").hide("slow");
+	$("#submiterrorimg").attr("src","img/green.png");
+      }
+      else{
+	$.playSound('sound/brief_incomplete.wav');
+	$("#submiterror").show();
+	$("#submiterror").html("<strong>Error</strong> :<br>One or several fields are incorrect.");
+	$("#submiterrorimg").attr("src","img/red.png");
+      }
+	
+      break
+      
+      case "Bande Annonce":
+      
+      break
+        
+      case "Guest Star":
+
+      break
+      
+      case "ID":
+	
+	var briefname = $("#bnerrorimg").attr("src");
+	var length = $("#lengtherrorimg").attr("src");
+	var beginpicker = $("#beginerrorimg").attr("src");
+	var endpicker = $("#enderrorimg").attr("src");
+	var feederror = $("#feederrorimg").attr("src");
+	
+	if ((briefname == "img/green.png") & (length == "img/green.png") & (beginpicker == "img/green.png") & (endpicker == "img/green.png") & (feederror == "img/green.png"))
+	{
+	  $.playSound('sound/brief_complete.wav');
+	  $("#submiterror").hide("slow");
+	  $("#submiterrorimg").attr("src","img/green.png");
+	}
+	else{
+	  $.playSound('sound/brief_incomplete.wav');
+	  $("#submiterror").show();
+	  $("#submiterror").html("<strong>Error</strong> :<br>One or several fields are incorrect.");
+	  $("#submiterrorimg").attr("src","img/red.png");
+	}
+      
+      break
+      
+      case "Jeu Concours":
+      
+      break
+
+      case "Programme Trace Sports":
+	
+      break
+      
+      case "Spot SMS":
+
+      break
+      
+      case "Top Urban":
+
+	
+      break
+      
+      case "Trace Event":
+      
+
+      break
+      
+      case "Zoom":
+
+	
+      break
+      
+      }
+      
+
+	
+      });
+      
+      });
+      
+      
+window.onbeforeunload = function(){
+ return "If you go back to the previous page,\r\nyou'll lose all datas.\r\nAre you sure ?"; 
+};

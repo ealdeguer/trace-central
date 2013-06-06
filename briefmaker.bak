@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Trace Central : Brief Maker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A web-based interface to create your briefs">
+    <meta name="author" content="Emmanuel ALDEGUER">
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="css/bootswatch.css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="css/ui-lightness/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/jquery.fileupload-ui.css">
+    <link rel="stylesheet" href="http://blueimp.github.com/Bootstrap-Image-Gallery/css/bootstrap-image-gallery.min.css">
+    <!-- CSS adjustments for browsers with JavaScript disabled --> 
+    <noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript> 
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+				   <link rel="shortcut icon" href="ico/favicon.gif">
+				   <link rel="shortcut icon" href="ico/favicon.png">
+                                   <link rel="shortcut icon" href="ico/favicon.ico">
+
+   <style>
+   .db {color:red;}
+   .bar {
+    height: 18px;
+    background: green;
+    }
+
+   </style>
+
+  <script src="js/jquery-1.8.3.js"></script>
+  <script src="js/jquery-ui-1.10.0.custom.js"></script>
+</head>
+
+  <body class="preview" data-spy="scroll" data-target=".subnav" data-offset="0">
+   <script src="js/bsa.js"></script>
+ <!-- Navbar 
+================================================== -->
+
+<div class="navbar navbar-fixed-top">
+   <div class="navbar-inner">
+     <div class="container">
+       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+       </a>
+       <a class="brand" href="../">CENTRAL</a>
+     <div class="nav-collapse" id="main-menu">
+        <ul class="nav" id="main-menu-left">
+          <li><a onclick="pageTracker._link(this.href); return false;" href="http://www.trace.tv">Trace Website</a></li>
+          <li><a id="swatch-link" href="index.html">Portal</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tasks History <b class="caret"></b></a>
+            <ul class="dropdown-menu" id="swatch-menu">
+              <li><a href="../default">Waiting for approval</a></li>
+              <li class="divider"></li>
+              <li><a href="../amelia">Task accepted</a></li>
+	      <li><a href="../amelia2"><font color="red">Task rejected</font></a></li>
+              <li><a href="../cerulean">Task finished</a></li>
+              <li><a href="../cosmo">Special Task</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" id="session-menu">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">You're logged in <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html">Switch User</a></li>
+              <li><a href="bootstrap.css">Send email to Administrator</a></li>
+              <li class="divider"></li>
+              <li><a target="_blank" href="portal.html">Log Out</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navl pull-right" id="main-menu-right">
+         
+        </ul>
+     </div> <!-- main menu -->
+     </div> <!-- container -->
+   </div> <!-- navbar-inner -->
+</div> <!-- navbar navbar-fixed-top -->
+
+    <div class="container">
+
+
+<!-- Masthead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="row">
+    <div class="span4">
+    <div class="alert alert-success"><a class="close">&times;</a><strong>Success</strong><br>You have one Task approved</div>
+    </div>
+    <div class="span4 offset1">
+    <img src="img/TRACE_LOGO_mini.png" class="img-polaroid" align="middle">
+    </div>
+    <div class="span3">
+    <div id="dbstatuserror" class="alert alert-error"><strong>Error</strong><br>You're not connected<br>to the database</div>
+    </div>
+  </div> <!-- row -->
+  <div class="row">
+   <div class="span12">
+      <h1>BRIEF MAKER v0.1</h1>
+      <p class="lead">A web-based interface to create your briefs.</p>
+    </div>
+  </div>
+  <div class="subnav">
+	<ul class="nav nav-pills">
+		<li id="mgeneral"><a href="#general">General</a></li>
+	        <li id="mpictures"><a href="#pictures">Pictures and Graphics</a></li>
+		<li id="mvideos"><a href="#videos">Videos</a></li>
+		<li id="mscript"><a href="#script">Script</a></li>
+		<li id="meventdate"><a href="#eventdate">Event Date</a></li>
+		<li id="mcityvenue"><a href="#cityvenue">City/Venue</a></li>
+		<li id="mticker"><a href="#ticker">Ticker</a></li>
+		<li id="mvoiceover"><a href="#voiceover">Voice-Over</a></li>
+		<li id="mpronunciation"><a href="#pronunciation">Pronunciation</a></li>
+		<li id="msubmit"><a href="#submit">Submit Task</a></li>
+	</ul>
+  </div> <!-- subnav -->
+</header>
+	<form class="form-horizontal well" method="POST" enctype="multipart/form-data">    
+<!--  General
+==================================================== --> 
+      <section id="general">
+	<div class="page-header">
+	    <h1>General</h1> 
+	</div> 
+	    <fieldset>
+		  <legend>General informations for the Brief</legend>
+	<!--    <input type="text" class="input-xlarge" id="test" value="TEST"> -->
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label">Internal ID :</label>
+			<div class="controls">
+			  <input type="text" class="input-xlarge" id="internalid" value="Type_Name" readonly="true">
+			</div><!-- controls-->
+		    </div> <!-- span7 -->
+		    <div class="span1">
+		      <img src="img/green.png">
+		    </div> <!-- span1 -->
+		  </div> <!-- control-group -->
+
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label">Submitted By :</label>
+			<div class="controls">
+			  <input type="text" class="input-xlarge" id="logged" value="Elodie" readonly="true">
+			</div> <!-- controls-->
+		    </div> <!-- span7 -->
+		    <div class="span1">
+		      <img src="img/green.png">
+		    </div> <!-- span1-->
+		  </div> <!-- control-group-->
+
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label" for="type">Program Type :</label>
+			<div class="controls">
+			  <select id="type">
+			  <option selected="selected">Please select a type</option>
+			  <option>Agenda</option>
+			  <option>Bande Annonce</option>
+			  <option>Billboard</option>
+			  <option>Guest Star</option>
+			  <option >ID</option>
+			  <option>Jeu Concours</option>
+			  <option>Programme Trace Sports</option>
+			  <option>Spot SMS</option>
+			  <option>Top Urban</option>
+			  <option>Trace Event</option>
+			  <option>Zoom</option>
+			  </select>
+			</div> <!-- controls -->
+		    </div> <!-- span7-->
+		    <div class="span1">
+		      <img id="typeerrorimg" src="img/red.png">
+		    </div> <!-- span1 -->
+		    <div class="span3">
+		      <div id="typeerror" class="alert alert-error"><strong>Error</strong> :<br>Program Type not Selected.</div>
+		    </div> <!-- span3 -->
+		  </div> <!-- control-group -->
+
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label" for="briefname">Brief Name :</label>
+			<div class="controls">
+			  <input type="text" class="input-xlarge" id="briefname" value="CAPS ONLY, NO ACCENTS">
+			</div> <!-- controls -->
+		    </div> <!-- span7 -->
+		    <div class="span1">
+		      <img id="bnerrorimg" src="img/red.png">
+		    </div> <!-- span1 -->
+		    <div class="span3">
+		      <div id="bnerror" class="alert alert-error"><strong>Error</strong> :<br>Briefname Incorrect.</div>
+		    </div> <!-- span3 -->
+		  </div> <!-- control-group -->
+   
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label">T LOUISE :</label>
+			<div class="controls">
+			  <input type="text" class="input-xlarge" id="idlouise" value="T00XXXXX" readonly="true">
+			</div> <!-- controls -->
+		    </div> <!-- span7-->
+		    <div class="span1">
+		    <img src="img/green.png">
+		    </div> <!-- span1 -->
+		  </div> <!-- control-group -->
+
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label" for="length">Length :</label>
+		      <div class="controls">
+		      <div id="lengthpicker" class="input-append">
+			<input id="length" data-format="hh:mm:ss" type="text" value="00:00:00">
+			<span class="add-on">
+			<i data-time-icon="icon-time" data-date-icon="icon-calendar">
+			</i>
+		      </span>
+		      </div> <!-- input-append-->
+		      </div> <!-- controls -->
+		    </div> <!-- span7-->
+
+		    <div class="span1">
+		      <img id="lengtherrorimg" src="img/red.png">
+		    </div> <!-- span1 -->
+		    <div class="span3">
+		      <div id="lengtherror" class="alert alert-error"><strong>Error</strong> :<br>Length Incorrect.</div>
+		    </div> <!-- span3 --> 
+		  </div> <!-- control-group -->
+
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label">Today Date :</label>
+			<div class="controls">
+			   <input id="today" data-format="yyyy-MM-dd" type="text" readonly="true">
+			</div> <!-- controls-->
+		    </div> <!-- span7 -->
+		    <div class="span1">
+		      <img src="img/green.png">
+		    </div> <!-- span1-->
+		  </div> <!-- control-group-->
+
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label" for="length">Campaign Begin Date :</label>
+		      <div class="controls">
+		      <div class="input-append">
+			<input id="beginpicker" data-format="yyyy-MM-dd" type="text">
+			<span class="add-on">
+			<i data-time-icon="icon-time" data-date-icon="icon-calendar" class="icon-calendar">
+			</i>
+			</span>
+		      </div> <!-- input-append-->
+		      </div> <!-- controls -->
+		    </div> <!-- span7-->
+
+		    <div class="span1">
+		      <img id="beginerrorimg" src="img/red.png">
+		    </div> <!-- span1 -->
+		    <div class="span3">
+		      <div id="beginerror" class="alert alert-error"><strong>Error</strong> :<br>Please confirm when The Campaign Begins</div>
+		    </div> <!-- span3 --> 
+		  </div> <!-- control-group -->
+		  
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label" for="end">Campaign End Date :</label>
+		      <div class="controls">
+			 <div class="input-append">
+			<input type="text" id="endpicker" data-format="yyyy-MM-dd">
+			<span class="add-on">
+			<i data-time-icon="icon-time" data-date-icon="icon-calendar" class="icon-calendar">
+			</i>
+			</span>
+		      </div> <!-- input append -->
+		      </div> <!-- controls -->
+		    </div> <!-- span7 -->
+		    <div class="span1">
+		      <img id="enderrorimg" src="img/red.png">
+		    </div> <!-- span1 -->
+		    <div class="span3">
+		      <div id="enderror" class="alert alert-error"><strong>Error</strong> :<br>Please confirm when The Campaign Ends</div>
+		    </div> <!-- span3 --> 
+		  </div> <!-- control-group -->
+		  <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label" for="feed">Feed(s) Concerned :</label>
+		      <div id="feedcheck" class="controls">
+			<label class="checkbox">
+			<div class="span1">
+			  <input type="checkbox" name="feed[]" value="feedurbfr">
+			  URB_FR<br>
+			  <input type="checkbox" name="feed[]" value="feedurbint">
+			  URB_INT<br>
+			  <input type="checkbox" name="feed[]" value="feedurbdom">
+			  URB_DOM<br>
+			  <input type="checkbox" name="feed[]" value="feedurbafricfr">
+			  URB_AFRICFR<br>
+			  <input type="checkbox" name="feed[]" value="feedurbafricen">
+			  URB_AFRICEN<br>
+			</div> <!-- span1 -->
+
+			<div class="span1">
+			  <input type="checkbox" name="feed[]" value="feedspfr">
+			  SP_FR<br>
+			  <input type="checkbox" name="feed[]" value="feedspint">
+			  SP_INT<br>
+			  <input type="checkbox" name="feed[]" value="feedspuk">
+			  SP_UK<br>
+			</div> <!-- span1 -->
+
+			<div class="span1">
+			  <input type="checkbox" name="feed[]" value="feedtropfr">
+			  TROP<br>
+			  <input type="checkbox" name="feed[]" value="feedafrica">
+			  AFRICA<br>
+			  <input type="checkbox" name="feed[]" value="feedstv">
+			  STV<br>
+			</div> <!-- span1 -->
+
+			</label> <!-- checkbox -->
+		      </div><!-- controls -->
+		    </div> <!-- span5-->
+		    <div class="span1">
+		      <img id="feederrorimg" src="img/red.png">
+		    </div> <!-- span1 -->
+		    <div class="span3">
+		      <div id="feederror" class="alert alert-error"><strong>Error</strong> :<br>You should select at least one Feed. </div>
+		    </div> <!-- span3 --> 
+		  </div> <!-- control-group -->
+				</fieldset>
+
+      </section> <!-- general-->
+
+      <section id="pictures">
+        <div class="page-header">
+	    <h1>Pictures and Graphics</h1>
+	</div>
+	    <fieldset>
+	      <legend>Upload your Pictures here</legend>
+	      <div class="control-group">
+		<div class="span7">
+		  <label class="control-label" for="picinput">Click here to upload :</label>
+		  <div class="controls">
+		    <input class="input-file" id="picinput" type="file">
+		  </div>	<!-- controls-->
+		</div> <!-- span7 -->
+		<div class="span1">
+		  <img src="img/red.png">
+		</div> <!-- span1 -->
+		<div class="span3">
+		  <div class="alert alert-error"><a class="close">&times;</a><strong>Error</strong> :<br>File type incorrect.</div>
+		</div> <!-- span3 --> 
+	      </div> <!-- control-group -->
+	      </fieldset>
+	</section> <!-- pictures -->
+
+	<section id="videos">
+        <div class="page-header">
+	    <h1>Videos</h1>
+	</div>
+	    <fieldset>
+	      <legend>Upload your Videos here</legend>
+
+	      <div class="control-group">
+		<div class="span7">
+		  <label class="control-label" for="vidinput">Click here to upload :</label>
+		  <div class="controls">
+		    <input class="input-file" id="vidinput" type="file">
+		  </div>	<!-- controls-->
+		</div> <!-- span7 -->
+		<div class="span1">
+		  <img src="img/red.png">
+		</div> <!-- span1 -->
+		<div class="span3">
+		  <div class="alert alert-error"><a class="close">&times;</a><strong>Error</strong> :<br>File type incorrect.</div>
+		</div> <!-- span3 --> 
+	      </div> <!-- control-group -->
+	    </fieldset>
+      </section> <!-- video-->
+
+      <section id="script">
+        <div class="page-header">
+	    <h1>Script</h1>
+	</div>
+	    <fieldset>
+	      <legend>Upload your script here</legend>
+
+	      <div class="control-group">
+	    		    <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
+        <!-- Redirect browsers with JavaScript disabled to the origin page -->
+        <noscript><input type="hidden" name="redirect" value="http://blueimp.github.com/jQuery-File-Upload/"></noscript>
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <div class="row fileupload-buttonbar">
+            <div class="span7">
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button">
+
+                    <i class="icon-plus icon-white"></i>
+                    <span>Add files...</span>
+                    <input type="file" name="files[]" multiple>
+                </span>
+                <button type="submit" class="btn btn-primary start">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Start upload</span>
+                </button>
+
+                <button type="reset" class="btn btn-warning cancel">
+                    <i class="icon-ban-circle icon-white"></i>
+                    <span>Cancel upload</span>
+                </button>
+                <button type="button" class="btn btn-danger delete">
+                    <i class="icon-trash icon-white"></i>
+                    <span>Delete</span>
+                </button>
+
+                <input type="checkbox" class="toggle">
+            </div> <!-- span7-->
+            <!-- The global progress information -->
+            <div class="span5 fileupload-progress fade">
+                <!-- The global progress bar -->
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="bar" style="width:0%;"></div>
+                </div>
+                <!-- The extended global progress information -->
+
+                <div class="progress-extended">&nbsp;</div>
+            </div> <!-- span5-->
+        </div> <!--row-->
+        <!-- The loading indicator is shown during file processing -->
+        <div class="fileupload-loading"></div>
+        <br>
+        <!-- The table listing the files available for upload/download -->
+        <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+    </form>
+	<!-- modal-gallery is the modal dialog used for the image gallery --> 
+    <div id="modal-gallery" class="modal modal-gallery hide fade" data-filter=":odd" tabindex="-1"> 
+      <div class="modal-header"> 
+        <a class="close" data-dismiss="modal">&times;</a> 
+        <h3 class="modal-title"></h3> 
+      </div>  <!-- modal-header-->
+    <div class="modal-body"><div class="modal-image"></div></div> <!--modal gallery-->
+      <div class="modal-footer"> 
+        <a class="btn modal-download" target="_blank"> 
+            <i class="icon-download"></i> 
+            <span>Download</span> 
+        </a> 
+        <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000"> 
+            <i class="icon-play icon-white"></i> 
+            <span>Slideshow</span> 
+        </a> 
+        <a class="btn btn-info modal-prev"> 
+            <i class="icon-arrow-left icon-white"></i> 
+            <span>Previous</span> 
+        </a> 
+        <a class="btn btn-primary modal-next"> 
+            <span>Next</span> 
+            <i class="icon-arrow-right icon-white"></i> 
+        </a> 
+      </div> <!--modal footer-->
+    </div> <!--control-group--> 
+    </fieldset>
+    </section> <!-- script-->
+
+      <section id="eventdate">
+        <div class="page-header">
+	    <h1>Event Date</h1>
+	</div>
+	    <fieldset>
+	      <legend>Please enter here the event date</legend>
+
+	    <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label" for="length">From :</label>
+		      <div class="controls">
+		      <div class="input-append">
+			<input id="beginevent" data-format="yyyy-MM-dd" type="text">
+			<span class="add-on">
+			<i data-time-icon="icon-time" data-date-icon="icon-calendar" class="icon-calendar">
+			</i>
+			</span>
+		      </div> <!-- input-append-->
+		      </div> <!-- controls -->
+		    </div> <!-- span7-->
+		    
+		    <div class="span1">
+		      <img id="begineventerrorimg" src="img/red.png">
+		    </div> <!-- span1 -->
+		    <div class="span3">
+		      <div id="begineventerror" class="alert alert-error"><strong>Error</strong> :<br>Please confirm when The Event Begins</div>
+		    </div> <!-- span3 --> 
+		  </div> <!-- control-group -->
+
+
+	    <div class="control-group">
+		    <div class="span7">
+		      <label class="control-label" for="length">To :</label>
+		      <div class="controls">
+		      <div class="input-append">
+			<input id="endevent" data-format="yyyy-MM-dd" type="text">
+			<span class="add-on">
+			<i data-time-icon="icon-time" data-date-icon="icon-calendar" class="icon-calendar">
+			</i>
+			</span>
+		      </div> <!-- input-append-->
+		      </div> <!-- controls -->
+		    </div> <!-- span7-->
+		    
+		    <div class="span1">
+		      <img id="endeventerrorimg" src="img/red.png">
+		    </div> <!-- span1 -->
+		    <div class="span3">
+		      <div id="endeventerror" class="alert alert-error"><strong>Error</strong> :<br>Please confirm when The Event Finishes</div>
+		    </div> <!-- span3 --> 
+		  </div> <!-- control-group -->
+	    </fieldset>
+      </section> <!-- event date -->
+
+      <section id="cityvenue">
+        <div class="page-header">
+	    <h1>City / Venue</h1>
+	</div>
+	    <fieldset>
+	      <legend>Please enter here the City and the Venue here :</legend>
+
+	    <div class="control-group">
+	      <div class="span7">
+		<label class="control-label" for="ville">City :</label>
+		<div class="controls">
+		  <input type="text" class="input-xlarge" id="city" value="CITY">
+		</div> <!-- controls -->
+	      </div> <!-- span7 -->
+	      <div class="span1">
+		<img id="cityerrorimg"src="img/red.png">
+	      </div> <!-- span1 -->
+	      <div class="span3">
+		<div id="cityerror" class="alert alert-error"><strong>Error</strong> :<br>Please fill the field.</div>
+	      </div> <!-- span3 -->
+	    </div> <!-- control-group -->
+
+	    <div class="control-group">
+	      <div class="span7">
+		<label id="tomate" class="control-label" for="ville">Venue :</label>
+		<div class="controls">
+		  <input type="text" class="input-xlarge" id="venue" value="VENUE">
+		</div> <!-- controls -->
+	      </div> <!-- span7 -->
+	      <div class="span1">
+		<img id="venueerrorimg" src="img/red.png">
+	      </div> <!-- span1 -->
+	      <div class="span3">
+		<div id="venueerror" class="alert alert-error"><strong>Error</strong> :<br>Please fill the field.</div>
+	      </div> <!-- span3 -->
+	    </div> <!-- control-group -->
+
+	    </fieldset>
+      </section> <!-- city venue-->
+
+      <section id="ticker">
+        <div class="page-header">
+	    <h1>Ticker Content</h1>
+	</div>
+	    <fieldset>
+	      <legend>Please enter here the ticker content</legend>
+
+	    <div class="control-group">
+	      <div class="span7">
+		<label class="control-label" for="tickertxt">Ticker Content :</label>
+		<div class="controls">
+		  <input type="text" class="input-xlarge" id="tickertxt" value="CAPS ONLY, NO ACCENTS">
+		</div> <!-- controls -->
+	      </div> <!-- span7 -->
+	      <div class="span1">
+		<img id="tickererrorimg" src="img/red.png">
+	      </div> <!-- span1 -->
+	      <div class="span3">
+		<div id="tickererror" class="alert alert-error"><strong>Error</strong> :<br>Details are missing.</div>
+	      </div> <!-- span3 -->
+	    </div> <!-- control-group -->
+	    </fieldset>
+      </section> <!-- ticker -->
+
+      <section id="voiceover">
+        <div class="page-header">
+	    <h1>Voice-Over</h1>
+	</div>
+	    <fieldset>
+	     <legend>All the details related to the voice-over</legend>
+	    <div class="control-group">
+	      <div class="span7">
+		<label class="control-label" for="voiceovertxt">Voice-over Text :</label>
+		<div class="controls">
+		  <input type="text" class="input-xlarge" id="voiceovertxt" value="Enter here the text related to the voice-over.">
+		</div> <!-- controls -->
+	      </div> <!-- span7 -->
+	      <div class="span1">
+		<img id="voiceovererrorimg" src="img/red.png">
+	      </div> <!-- span1 -->
+	      <div class="span3">
+		<div class="alert alert-error" id="voiceovererror"><strong>Error</strong> :<br>Voice-over text is missing.</div>
+	      </div> <!-- span3 -->
+	    </div> <!-- control-group -->
+	  </fieldset>
+      </section> <!--oversub-->
+
+      <section id="pronunciation">
+        <div class="page-header">
+	    <h1>Pronunciation Details</h1>
+	</div> <!-- page-header-->
+	    <fieldset>
+	    <legend>All the details related to pronunciation</legend>
+	    <div class="control-group">
+	      <div class="span7">
+		<label class="control-label" for="pronunciationtxt">Pronunciation Details :</label>
+		<div class="controls">
+		  <input type="text" class="input-xlarge" id="pronunciationtxt" value="Free Field">
+		</div> <!-- controls -->
+	      </div> <!-- span7 -->
+	      <div class="span1">
+		<img id="pronunciationerrorimg" src="img/red.png">
+	      </div> <!-- span1 -->
+	      <div class="span3">
+		<div class="alert alert-error" id="pronunciationerror"><strong>Error</strong> :<br>Details are missing.</div>
+	      </div> <!-- span3 -->
+	    </div> <!-- control-group -->
+	    </fieldset>
+      </section> <!-- pronunciation-->
+      
+      <section id="submit">
+        <div class="page-header">
+	    <h1>Submit Task</h1>
+	</div> <!-- page-header-->
+	    <fieldset>
+	    <legend>Please double-check all the fields before submitting</legend>
+	    <div class="span7">
+	      <button id="valid" type="submit" class="btn btn-primary">Submit your Task</button>
+	      <button id="reset" class="btn">Reset</button>
+	    </div> <!--span7 -->
+	    <div class="span1">
+	      <img src="img/red.png">
+	    </div> <!-- span1 -->
+	    <div class="span3">
+	      <div class="alert alert-error"><a class="close">&times;</a><strong>Error</strong> :<br>Some fields are incomplete.</div>
+	    </div> <!-- span3 -->
+	    </fieldset>
+      </section> <!-- submit-->
+	</form>
+
+         <!-- Footer
+      ================================================== -->
+      <hr>
+
+      <footer id="footer">
+	<div class="row">
+	<div class="span1">
+	<img id="dbstatusimg" src="img/red.png"> : 
+	</div> <!-- span1 -->
+        
+	<div class="span3">
+	<db id="dbstatus">Database Error</db>
+        </div> <!-- /span3 -->
+
+        <div class="span4">
+        Code by Emmanuel ALDEGUER - 2012
+        </div> <!-- /span4 -->    
+
+        <div class="span4">
+        <p><a href="#">Back to top</a></p>
+        </div> <!-- /span4 -->
+       </div> <!--row-->
+      </footer>
+
+</div><!-- /container -->
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/central.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/application.js"></script>
+    <script src="js/bootswatch.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/vendor/jquery.ui.widget.js"></script>
+    <script src="js/jquery.iframe-transport.js"></script>
+    <script src="js/jquery.fileupload.js"></script>
+    <script src="js/jquery.fileupload-ui.js"></script>
+    <script src="js/jquery.fileupload-fp.js"></script> 
+    <script src="js/upload.js"></script>
+    <script src="js/tmpl.min.js"></script>
+    <script src="js/load-image.min.js"></script>
+    <script src="js/canvas-to-blob.min.js"></script>
+    <script src="js/bootstrap-image-gallery.min.js"></script>
+  </body>
+</html>
