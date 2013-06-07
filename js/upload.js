@@ -12,6 +12,8 @@
 /*jslint nomen: true, unparam: true, regexp: true */
 /*global $, window, document */
 
+
+
 $(function () {
     'use strict';
 //For Pictures
@@ -20,11 +22,12 @@ $(function () {
         // Uncomment the following to send cross-domain cookies:
         //xhrFields: {withCredentials: true},
 	url: 'server/php/picture/',
-        maxFileSize: 1000000000,
+	maxFileSize: 1000000000,
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
             process: [
                 {
-                    action: 'load',
+                    
+		    action: 'load',
                     fileTypes: /^image\/(gif|jpeg|png)$/,
                     maxFileSize: 2000000000 // 20MB
                 },

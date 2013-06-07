@@ -20,7 +20,7 @@ $(document).ready(function() {
       //Purge the temp script files
       $.ajax({
 	  url: "php-services/purge.php"});
-//       		      
+      
       //form adaptation depending selected type
       $("#type").change( function() {
       var str="";      
@@ -387,8 +387,9 @@ $(document).ready(function() {
       //creation of the internal ID
       if ($("#type").val()!="Please select a type" & $("#briefname").val()!="CAPS ONLY, NO ACCENTS")
       {
-	var internalid = $("#type").val()+'_'+$("#briefname").val();
+	var internalid = today+'_'+$("#type").val()+'_'+$("#briefname").val();
 	$("#internalid").val(internalid);
+	$.post('php-services/picture-name-passer.php', {bn: internalid});
       }
       else{}
       
@@ -417,8 +418,9 @@ $(document).ready(function() {
       //Creation of the internal ID
       if ($("#type").val()!="Please select a type" & $("#briefname").val()!="CAPS ONLY, NO ACCENTS")
       {
-	var internalid = $("#type").val()+'_'+$("#briefname").val();
+	var internalid = today+'_'+$("#type").val()+'_'+$("#briefname").val();
 	$("#internalid").val(internalid);
+	$.post('php-services/picture-name-passer.php', {bn: internalid});
       }
       else{}
       
